@@ -67,13 +67,13 @@ Partial Class Main
         Me.获取最前窗口信息热键HomeToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.获取鼠标窗口信息热键InsertToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.测试窗口捕捉闪烁窗口ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.设置开机启动ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.NotifyIcon1 = New System.Windows.Forms.NotifyIcon(Me.components)
         Me.ContextMenuStrip1 = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.显示ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.退出ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.Timer2 = New System.Windows.Forms.Timer(Me.components)
         Me.Timer3 = New System.Windows.Forms.Timer(Me.components)
-        Me.设置开机启动ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.GroupBox5.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.ToolStrip2.SuspendLayout()
@@ -101,11 +101,11 @@ Partial Class Main
         Me.GroupBox5.Controls.Add(Me.GroupBox7)
         Me.GroupBox5.Controls.Add(Me.GroupBox8)
         Me.GroupBox5.Dock = System.Windows.Forms.DockStyle.Left
-        Me.GroupBox5.Location = New System.Drawing.Point(0, 28)
+        Me.GroupBox5.Location = New System.Drawing.Point(0, 27)
         Me.GroupBox5.Margin = New System.Windows.Forms.Padding(4)
         Me.GroupBox5.Name = "GroupBox5"
         Me.GroupBox5.Padding = New System.Windows.Forms.Padding(4)
-        Me.GroupBox5.Size = New System.Drawing.Size(459, 300)
+        Me.GroupBox5.Size = New System.Drawing.Size(459, 301)
         Me.GroupBox5.TabIndex = 8
         Me.GroupBox5.TabStop = False
         Me.GroupBox5.Text = "窗口信息"
@@ -116,7 +116,7 @@ Partial Class Main
         Me.GroupBox1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.GroupBox1.Location = New System.Drawing.Point(4, 247)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(451, 49)
+        Me.GroupBox1.Size = New System.Drawing.Size(451, 50)
         Me.GroupBox1.TabIndex = 16
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "窗口操作"
@@ -322,12 +322,13 @@ Partial Class Main
         Me.DataGridView1.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.ColumnNum, Me.ColumnName, Me.ColumnClass, Me.ColumnHandle, Me.ColumnType})
         Me.DataGridView1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.DataGridView1.Location = New System.Drawing.Point(3, 46)
+        Me.DataGridView1.MultiSelect = False
         Me.DataGridView1.Name = "DataGridView1"
         Me.DataGridView1.RowHeadersVisible = False
         Me.DataGridView1.RowHeadersWidth = 25
         Me.DataGridView1.RowTemplate.Height = 27
         Me.DataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.DataGridView1.Size = New System.Drawing.Size(541, 201)
+        Me.DataGridView1.Size = New System.Drawing.Size(541, 202)
         Me.DataGridView1.TabIndex = 10
         '
         'ColumnNum
@@ -386,9 +387,9 @@ Partial Class Main
         Me.GroupBox10.Controls.Add(Me.ToolStrip4)
         Me.GroupBox10.Controls.Add(Me.GroupBox2)
         Me.GroupBox10.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.GroupBox10.Location = New System.Drawing.Point(459, 28)
+        Me.GroupBox10.Location = New System.Drawing.Point(459, 27)
         Me.GroupBox10.Name = "GroupBox10"
-        Me.GroupBox10.Size = New System.Drawing.Size(547, 300)
+        Me.GroupBox10.Size = New System.Drawing.Size(547, 301)
         Me.GroupBox10.TabIndex = 11
         Me.GroupBox10.TabStop = False
         Me.GroupBox10.Text = "自动化值守操作"
@@ -416,7 +417,7 @@ Partial Class Main
         '
         Me.GroupBox2.Controls.Add(Me.ToolStrip3)
         Me.GroupBox2.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.GroupBox2.Location = New System.Drawing.Point(3, 247)
+        Me.GroupBox2.Location = New System.Drawing.Point(3, 248)
         Me.GroupBox2.Name = "GroupBox2"
         Me.GroupBox2.Size = New System.Drawing.Size(541, 50)
         Me.GroupBox2.TabIndex = 17
@@ -469,33 +470,39 @@ Partial Class Main
         Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.退出软件ToolStripMenuItem, Me.获取最前窗口信息热键HomeToolStripMenuItem, Me.获取鼠标窗口信息热键InsertToolStripMenuItem, Me.测试窗口捕捉闪烁窗口ToolStripMenuItem, Me.设置开机启动ToolStripMenuItem})
         Me.MenuStrip1.Location = New System.Drawing.Point(0, 0)
         Me.MenuStrip1.Name = "MenuStrip1"
-        Me.MenuStrip1.Size = New System.Drawing.Size(1006, 28)
+        Me.MenuStrip1.Size = New System.Drawing.Size(1006, 27)
         Me.MenuStrip1.TabIndex = 12
         Me.MenuStrip1.Text = "MenuStrip1"
         '
         '退出软件ToolStripMenuItem
         '
         Me.退出软件ToolStripMenuItem.Name = "退出软件ToolStripMenuItem"
-        Me.退出软件ToolStripMenuItem.Size = New System.Drawing.Size(83, 24)
+        Me.退出软件ToolStripMenuItem.Size = New System.Drawing.Size(83, 23)
         Me.退出软件ToolStripMenuItem.Text = "退出软件"
         '
         '获取最前窗口信息热键HomeToolStripMenuItem
         '
         Me.获取最前窗口信息热键HomeToolStripMenuItem.Name = "获取最前窗口信息热键HomeToolStripMenuItem"
-        Me.获取最前窗口信息热键HomeToolStripMenuItem.Size = New System.Drawing.Size(225, 24)
+        Me.获取最前窗口信息热键HomeToolStripMenuItem.Size = New System.Drawing.Size(225, 23)
         Me.获取最前窗口信息热键HomeToolStripMenuItem.Text = "获取最前窗口信息(热键Home)"
         '
         '获取鼠标窗口信息热键InsertToolStripMenuItem
         '
         Me.获取鼠标窗口信息热键InsertToolStripMenuItem.Name = "获取鼠标窗口信息热键InsertToolStripMenuItem"
-        Me.获取鼠标窗口信息热键InsertToolStripMenuItem.Size = New System.Drawing.Size(222, 24)
+        Me.获取鼠标窗口信息热键InsertToolStripMenuItem.Size = New System.Drawing.Size(222, 23)
         Me.获取鼠标窗口信息热键InsertToolStripMenuItem.Text = "获取鼠标窗口信息(热键Insert)"
         '
         '测试窗口捕捉闪烁窗口ToolStripMenuItem
         '
         Me.测试窗口捕捉闪烁窗口ToolStripMenuItem.Name = "测试窗口捕捉闪烁窗口ToolStripMenuItem"
-        Me.测试窗口捕捉闪烁窗口ToolStripMenuItem.Size = New System.Drawing.Size(183, 24)
+        Me.测试窗口捕捉闪烁窗口ToolStripMenuItem.Size = New System.Drawing.Size(183, 23)
         Me.测试窗口捕捉闪烁窗口ToolStripMenuItem.Text = "测试窗口捕捉(闪烁窗口)"
+        '
+        '设置开机启动ToolStripMenuItem
+        '
+        Me.设置开机启动ToolStripMenuItem.Name = "设置开机启动ToolStripMenuItem"
+        Me.设置开机启动ToolStripMenuItem.Size = New System.Drawing.Size(113, 23)
+        Me.设置开机启动ToolStripMenuItem.Text = "设置开机启动"
         '
         'NotifyIcon1
         '
@@ -527,12 +534,6 @@ Partial Class Main
         '
         'Timer3
         '
-        '
-        '设置开机启动ToolStripMenuItem
-        '
-        Me.设置开机启动ToolStripMenuItem.Name = "设置开机启动ToolStripMenuItem"
-        Me.设置开机启动ToolStripMenuItem.Size = New System.Drawing.Size(113, 24)
-        Me.设置开机启动ToolStripMenuItem.Text = "设置开机启动"
         '
         'Main
         '

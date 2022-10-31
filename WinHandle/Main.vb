@@ -406,7 +406,8 @@ Public Class Main
     End Sub
     Dim Doindex As Integer = -1
     Private Sub Timer2_Tick(sender As Object, e As EventArgs) Handles Timer2.Tick
-        Timer2.Interval = 5000
+        TimeRev = 5
+        Timer2.Interval = TimeRev * 1000
         Doindex += 1
         If Doindex > MyAutoDataSet.Tables(0).Rows.Count - 1 Then
             TimeRev = 60 * 10
@@ -414,9 +415,13 @@ Public Class Main
             Doindex = -1
             LogText.Text = "完成全部值守操作."
         Else
+            Try
+                DataGridView1.Rows(Doindex).Selected = True
+                DataGridView1.FirstDisplayedScrollingRowIndex = Doindex
+            Catch ex As Exception
+            End Try
             Dim AutoHwnd As Integer = CheckHwnd(MyAutoDataSet.Tables(0).Rows(Doindex).Item("Name"), MyAutoDataSet.Tables(0).Rows(Doindex).Item("Class"), -1, True, Doindex + 1)
             If AutoHwnd <> -1 Then
-
                 Select Case MyAutoDataSet.Tables(0).Rows(Doindex).Item("Type")
                     Case -1
                         Try
@@ -440,8 +445,8 @@ Public Class Main
     End Sub
 
     Private Sub Timer3_Tick(sender As Object, e As EventArgs) Handles Timer3.Tick
-        TimeRev -= 1
         If Timer2.Enabled Then
+            TimeRev -= 1
             GroupBox10.Text = "自动化值守操作          (倒计时:" & CulCulateLastTimeText(TimeRev, 0) & ")"
         Else
             GroupBox10.Text = "自动化值守操作          (已停止.)"
@@ -483,6 +488,7 @@ Public Class Main
         If Timer2.Enabled Then
             ToolStripLabel13.Text = "停止值守"
             TimeRev = 15
+            Timer2.Interval = 1000 * TimeRev
         Else
             ToolStripLabel13.Text = "恢复值守"
         End If

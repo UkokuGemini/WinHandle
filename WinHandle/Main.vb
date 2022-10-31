@@ -21,8 +21,8 @@ Public Class Main
     Dim TimeRev As Integer
     Private Sub Form1_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         DataBaseConnection.ConnectionString = "Data Source=" & DataBasePath
-        RegisterHotKey(Handle, 0, Nothing, Keys.Home)
-        RegisterHotKey(Handle, 1, Nothing, Keys.Insert)
+        RegisterHotKey(Handle, 0, 2, Keys.Home)
+        RegisterHotKey(Handle, 1, 2, Keys.Insert)
         MyAutoDataSet = SQLDataBaseQeury("SELECT * FROM Sys_Auto ORDER BY Num", DataBaseConnection)
         GridViewDisplay()
         Timer3.Interval = 1000
@@ -265,6 +265,8 @@ Public Class Main
         Else
             Me.ShowInTaskbar = True
             NotifyIcon1.Visible = False
+            RegisterHotKey(Handle, 0, 2, Keys.Home)
+            RegisterHotKey(Handle, 1, 2, Keys.Insert)
         End If
     End Sub
 

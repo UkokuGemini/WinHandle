@@ -154,43 +154,43 @@ Public Class Main
     Function CheckHwnd(ByVal Name_T As String, ByVal Class_T As String, ByVal Hwnd_T As Integer, Optional AutoFlag As Boolean = False, Optional AutoIndex As Integer = 0) As Integer
         Dim CheckResult As Integer = -1
         If IsDBNull(Hwnd_T) OrElse Hwnd_T.ToString = "" OrElse Hwnd_T = -1 Then
-            If IsDBNull(Name_T) OrElse Name_T = "" Then
-                If IsDBNull(Class_T) OrElse Class_T = "" Then
+            If IsDBNull(Class_T) OrElse Class_T = "" Then
+                If IsDBNull(Name_T) OrElse Name_T = "" Then
                     LogText.Text = "请至少填写一项!"
                 Else
                     Try
-                        Hwnd = FindWindow(Class_T, vbNullString)
+                        Hwnd = FindWindow(vbNullString, Name_T)
                     Catch ex As Exception
                     End Try
                     If Hwnd > 0 Then
                         If AutoFlag = False Then
                             HandleInfoText.Text = Hwnd
-                            TempStringW = Space(255)
-                            WindowLong = GetWindowText(Hwnd, TempStringW, 255)
-                            WinInfoText.Text = Trim(TempStringW)
-                            LogText.Text = "捕捉到Class:(" & Class_T & ")窗口!    ✔"
+                            TempStringC = Space(255)
+                            GetClassName(Hwnd, TempStringC, 255)
+                            ClassInfoText.Text = Trim(TempStringC)
+                            LogText.Text = "捕捉到Name:(" & Name_T & ")窗口!    ✔"
                         End If
                         CheckResult = Hwnd
                     Else
-                        LogText.Text = "未捕捉到Class:(" & Class_T & ")窗口!"
+                        LogText.Text = "未捕捉到Name:(" & Name_T & ")窗口!"
                     End If
                 End If
             Else
                 Try
-                    Hwnd = FindWindow(vbNullString, Name_T)
+                    Hwnd = FindWindow(Class_T, vbNullString)
                 Catch ex As Exception
                 End Try
                 If Hwnd > 0 Then
                     If AutoFlag = False Then
                         HandleInfoText.Text = Hwnd
-                        TempStringC = Space(255)
-                        GetClassName(Hwnd, TempStringC, 255)
-                        ClassInfoText.Text = Trim(TempStringC)
-                        LogText.Text = "捕捉到Name:(" & Name_T & ")窗口!    ✔"
+                        TempStringW = Space(255)
+                        WindowLong = GetWindowText(Hwnd, TempStringW, 255)
+                        WinInfoText.Text = Trim(TempStringW)
+                        LogText.Text = "捕捉到Class:(" & Class_T & ")窗口!    ✔"
                     End If
                     CheckResult = Hwnd
                 Else
-                    LogText.Text = "未捕捉到Name:(" & Name_T & ")窗口!"
+                    LogText.Text = "未捕捉到Class:(" & Class_T & ")窗口!"
                 End If
             End If
         ElseIf IsNumeric(Hwnd_T) Then

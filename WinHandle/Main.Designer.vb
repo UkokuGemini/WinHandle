@@ -73,6 +73,7 @@ Partial Class Main
         Me.退出ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.Timer2 = New System.Windows.Forms.Timer(Me.components)
         Me.Timer3 = New System.Windows.Forms.Timer(Me.components)
+        Me.设置开机启动ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.GroupBox5.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.ToolStrip2.SuspendLayout()
@@ -465,7 +466,7 @@ Partial Class Main
         'MenuStrip1
         '
         Me.MenuStrip1.ImageScalingSize = New System.Drawing.Size(20, 20)
-        Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.退出软件ToolStripMenuItem, Me.获取最前窗口信息热键HomeToolStripMenuItem, Me.获取鼠标窗口信息热键InsertToolStripMenuItem, Me.测试窗口捕捉闪烁窗口ToolStripMenuItem})
+        Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.退出软件ToolStripMenuItem, Me.获取最前窗口信息热键HomeToolStripMenuItem, Me.获取鼠标窗口信息热键InsertToolStripMenuItem, Me.测试窗口捕捉闪烁窗口ToolStripMenuItem, Me.设置开机启动ToolStripMenuItem})
         Me.MenuStrip1.Location = New System.Drawing.Point(0, 0)
         Me.MenuStrip1.Name = "MenuStrip1"
         Me.MenuStrip1.Size = New System.Drawing.Size(1006, 28)
@@ -526,6 +527,12 @@ Partial Class Main
         '
         'Timer3
         '
+        '
+        '设置开机启动ToolStripMenuItem
+        '
+        Me.设置开机启动ToolStripMenuItem.Name = "设置开机启动ToolStripMenuItem"
+        Me.设置开机启动ToolStripMenuItem.Size = New System.Drawing.Size(113, 24)
+        Me.设置开机启动ToolStripMenuItem.Text = "设置开机启动"
         '
         'Main
         '
@@ -627,4 +634,5 @@ Partial Class Main
     Friend WithEvents Timer3 As Timer
     Friend WithEvents ToolStrip4 As ToolStrip
     Friend WithEvents ToolStripLabel13 As ToolStripLabel
+    Friend WithEvents 设置开机启动ToolStripMenuItem As ToolStripMenuItem
 End Class

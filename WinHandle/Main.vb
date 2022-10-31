@@ -1,5 +1,4 @@
 ﻿Imports System.IO
-Imports System.Windows.Forms.VisualStyles.VisualStyleElement
 
 Public Class Main
     Public Declare Auto Function RegisterHotKey Lib "user32.dll" Alias "RegisterHotKey" (ByVal hwnd As IntPtr, ByVal id As Integer, ByVal fsModifiers As Integer, ByVal vk As Integer) As Boolean
@@ -55,6 +54,23 @@ Public Class Main
             End If
         End If
         MyBase.WndProc(m)
+    End Sub
+    Private Sub CreateStartup()
+        Dim WScript_T As Object = CreateObject("WScript.Shell")
+        Dim StartupPath = Environment.GetFolderPath(Environment.SpecialFolder.Startup)
+        Dim AppName = My.Application.Info.ProductName
+        'Dim desk As String = WScript_T.SpecialFolders("Desktop")
+        Dim AppInk As Object = WScript_T.CreateShortcut(StartupPath & "\" & AppName & ".exe.lnk")
+        'If Not IO.File.Exists(AppInk) Then
+        With AppInk
+            .Description = "WinHandle.Ink"
+            .IconLocation = Application.StartupPath + "\" + My.Application.Info.AssemblyName & ".exe,0"
+            .TargetPath = Application.StartupPath + "\" + My.Application.Info.AssemblyName & ".exe "
+            .WindowStyle = 7 '打开窗体的风格，最小化
+            .WorkingDirectory = Application.StartupPath '工作路径
+            .Save() '保存快捷方式
+        End With
+        'End If
     End Sub
     Private Declare Function GetForegroundWindow Lib "user32" Alias "GetForegroundWindow" () As Integer
     Private Declare Function GetClassName Lib "user32" Alias "GetClassNameA" (ByVal hwnd As Integer, ByVal lpClassName As String, ByVal n2MaxCount As Integer) As Integer
@@ -471,14 +487,8 @@ Public Class Main
             ToolStripLabel13.Text = "恢复值守"
         End If
     End Sub
-#Region ""
 
-#End Region
-    Sub NADD()
-
+    Private Sub 设置开机启动ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 设置开机启动ToolStripMenuItem.Click
+        CreateStartup()
     End Sub
-
-
-
-
 End Class

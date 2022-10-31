@@ -3,10 +3,10 @@
 Public Class Main
     Public Declare Auto Function RegisterHotKey Lib "user32.dll" Alias "RegisterHotKey" (ByVal hwnd As IntPtr, ByVal id As Integer, ByVal fsModifiers As Integer, ByVal vk As Integer) As Boolean
     Public Declare Auto Function UnRegisterHotKey Lib "user32.dll" Alias "UnregisterHotKey" (ByVal hwnd As IntPtr, ByVal id As Integer) As Boolean
-    Private Declare Function PostMessage Lib "user32" Alias "PostMessageA" (ByVal hwnd As Integer, ByVal wMsg As Integer, ByVal wParam As Integer, ByVal lParam As Long) As Integer
+    Private Declare Function PostMessage Lib "user32" Alias "PostMessageA" (ByVal hwnd As Integer, ByVal wMsg As Integer, ByVal wParam As Integer, ByVal lParam As Integer) As Integer
     Private Declare Function FindWindow Lib "user32" Alias "FindWindowA" (ByVal lpClassName As String, ByVal lpWindowName As String) As Integer
     Declare Function ShowWindow Lib "user32" Alias "ShowWindow" (ByVal hwnd As IntPtr, ByVal nCmdShow As Integer) As Integer
-    Public Declare Function IsWindow Lib "user32" (ByVal hwnd As Long) As Long
+    Public Declare Function IsWindow Lib "user32" (ByVal hwnd As Integer) As Boolean
     Dim Hwnd As Integer
     Public Const WM_HOTKEY = &H312
     Public Const MOD_ALT = &H1
@@ -151,9 +151,9 @@ Public Class Main
         LogText.Focus()
         LogText.Select(LogText.Text.Length, 0)
     End Sub
-    Function CheckHwnd(ByVal Name_T As String, ByVal Class_T As String, ByVal Hwnd_T As Integer, Optional AutoFlag As Boolean = False, Optional AutoIndex As Integer = 0) As Integer
+    Function CheckHwnd(ByVal Name_T As String, ByVal Class_T As String, ByVal Hwnd_T As String, Optional AutoFlag As Boolean = False, Optional AutoIndex As Integer = 0) As Integer
         Dim CheckResult As Integer = -1
-        If IsDBNull(Hwnd_T) OrElse Hwnd_T.ToString = "" OrElse Hwnd_T = -1 Then
+        If IsDBNull(Hwnd_T) OrElse Hwnd_T.ToString = "" Then
             If IsDBNull(Class_T) OrElse Class_T = "" Then
                 If IsDBNull(Name_T) OrElse Name_T = "" Then
                     LogText.Text = "请至少填写一项!"
@@ -176,29 +176,41 @@ Public Class Main
                     End If
                 End If
             Else
-                Try
-                    Hwnd = FindWindow(Class_T, vbNullString)
-                Catch ex As Exception
-                End Try
-                If Hwnd > 0 Then
-                    If AutoFlag = False Then
-                        HandleInfoText.Text = Hwnd
-                        TempStringW = Space(255)
-                        WindowLong = GetWindowText(Hwnd, TempStringW, 255)
-                        WinInfoText.Text = Trim(TempStringW)
-                        LogText.Text = "捕捉到Class:(" & Class_T & ")窗口!    ✔"
-                    End If
-                    CheckResult = Hwnd
+                If IsDBNull(Name_T) OrElse Name_T = "" Then
+                    Try
+                        Hwnd = FindWindow(Class_T, vbNullString)
+                    Catch ex As Exception
+                    End Try
                 Else
-                    LogText.Text = "未捕捉到Class:(" & Class_T & ")窗口!"
+                    Try
+                        Hwnd = FindWindow(Class_T, Name_T)
+                    Catch ex As Exception
+                    End Try
                 End If
-            End If
-        ElseIf IsNumeric(Hwnd_T) Then
+                If Hwnd > 0 Then
+                        If AutoFlag = False Then
+                            HandleInfoText.Text = Hwnd
+                            TempStringW = Space(255)
+                            WindowLong = GetWindowText(Hwnd, TempStringW, 255)
+                            WinInfoText.Text = Trim(TempStringW)
+                            LogText.Text = "捕捉到Class:(" & Class_T & ")窗口!    ✔"
+                        End If
+                        CheckResult = Hwnd
+                    Else
+                        LogText.Text = "未捕捉到Class:(" & Class_T & ")窗口!"
+                    End If
+                End If
+                ElseIf IsNumeric(Hwnd_T) Then
             Hwnd = Math.Abs(Convert.ToInt32(Hwnd_T))
-            TempStringW = Space(255)
-            WindowLong = GetWindowText(Hwnd, TempStringW, 255)
-            If WindowLong > 0 Then
+            Dim ISWinBool As Boolean = False
+            Try
+                ISWinBool = IsWindow(Hwnd)
+            Catch ex As Exception
+            End Try
+            If ISWinBool Then
                 If AutoFlag = False Then
+                    TempStringW = Space(255)
+                    WindowLong = GetWindowText(Hwnd, TempStringW, 255)
                     WinInfoText.Text = Trim(TempStringW)
                     TempStringC = Space(255)
                     GetClassName(Hwnd, TempStringC, 255)
@@ -233,35 +245,57 @@ Public Class Main
         LogText.Text = ""
         Hwnd = Convert.ToUInt32(HandleInfoText.Text)
         If Hwnd > 0 Then
-            ShowWindow(Hwnd, SW_HIDE)
-            ShowWindow(Hwnd, SW_SHOWNORMAL)
+            Try
+                ShowWindow(Hwnd, SW_HIDE)
+                ShowWindow(Hwnd, SW_SHOWNORMAL)
+            Catch ex As Exception
+                MsgBox(ex.Message.ToString)
+            End Try
         Else
             LogText.Text = "无窗口目标!"
         End If
     End Sub
 
     Private Sub ToolStripLabel3_Click(sender As Object, e As EventArgs) Handles ToolStripLabel3.Click
-        PostMessage(Hwnd, &H112, &HF030, 0)
+        Try
+            PostMessage(Hwnd, &H112, &HF030, 0)
+        Catch ex As Exception
+        End Try
     End Sub
 
     Private Sub ToolStripLabel4_Click(sender As Object, e As EventArgs) Handles ToolStripLabel4.Click
-        ShowWindow(Hwnd, SW_HIDE)
+        Try
+            ShowWindow(Hwnd, SW_HIDE)
+        Catch ex As Exception
+        End Try
     End Sub
 
     Private Sub ToolStripLabel6_Click(sender As Object, e As EventArgs) Handles ToolStripLabel6.Click
-        ShowWindow(Hwnd, SW_SHOWNORMAL)
+        Try
+            ShowWindow(Hwnd, SW_SHOWNORMAL)
+        Catch ex As Exception
+        End Try
     End Sub
 
     Private Sub ToolStripLabel5_Click(sender As Object, e As EventArgs) Handles ToolStripLabel5.Click
-        PostMessage(Hwnd, &H112, &HF020, 0)
+        Try
+            PostMessage(Hwnd, &H112, &HF020, 0)
+        Catch ex As Exception
+        End Try
     End Sub
 
     Private Sub ToolStripLabel7_Click(sender As Object, e As EventArgs) Handles ToolStripLabel7.Click
-        PostMessage(Hwnd, &H112, &HF120, 0)
+        Try
+            PostMessage(Hwnd, &H112, &HF120, 0)
+        Catch ex As Exception
+        End Try
     End Sub
 
     Private Sub ToolStripLabel8_Click(sender As Object, e As EventArgs) Handles ToolStripLabel8.Click
-        PostMessage(Hwnd, &H112, &HF060, 0)
+        Try
+            PostMessage(Hwnd, &H112, &HF060, 0)
+        Catch ex As Exception
+        End Try
     End Sub
 
     Private Sub 退出ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 退出ToolStripMenuItem.Click
@@ -420,7 +454,7 @@ Public Class Main
                 DataGridView1.FirstDisplayedScrollingRowIndex = Doindex
             Catch ex As Exception
             End Try
-            Dim AutoHwnd As Integer = CheckHwnd(MyAutoDataSet.Tables(0).Rows(Doindex).Item("Name"), MyAutoDataSet.Tables(0).Rows(Doindex).Item("Class"), -1, True, Doindex + 1)
+            Dim AutoHwnd As Integer = CheckHwnd(MyAutoDataSet.Tables(0).Rows(Doindex).Item("Name"), MyAutoDataSet.Tables(0).Rows(Doindex).Item("Class"), "", True, Doindex + 1)
             If AutoHwnd <> -1 Then
                 Select Case MyAutoDataSet.Tables(0).Rows(Doindex).Item("Type")
                     Case -1

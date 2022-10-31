@@ -27,9 +27,13 @@ Public Class Main
         GridViewDisplay()
         Timer3.Interval = 1000
         Timer3.Enabled = True
-        TimeRev = 5
+        TimeRev = 15
         Timer2.Interval = TimeRev * 1000
-        Timer2.Enabled = True
+        If MyAutoDataSet.Tables(0).Rows.Count > 0 Then
+            Timer2.Enabled = True
+        Else
+            ToolStripLabel13.Text = "恢复值守"
+        End If
     End Sub
     Private Sub Main_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
         If TrueClose = False Then
@@ -265,7 +269,9 @@ Public Class Main
     End Sub
 
     Private Sub NotifyIcon1_MouseClick(sender As Object, e As MouseEventArgs) Handles NotifyIcon1.MouseClick
-        WindowState = FormWindowState.Normal
+        If e.Button = Windows.Forms.MouseButtons.Left Then
+            WindowState = FormWindowState.Normal
+        End If
     End Sub
 
     Private Sub 退出软件ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 退出软件ToolStripMenuItem.Click
@@ -366,6 +372,10 @@ Public Class Main
             MyAutoDataSet = SQLDataBaseQeury("SELECT * FROM Sys_Auto ORDER BY Num", DataBaseConnection)
         End If
         GridViewDisplay()
+        If MyAutoDataSet.Tables(0).Rows.Count = 0 Then
+            Timer2.Enabled = False
+            ToolStripLabel13.Text = "恢复值守"
+        End If
     End Sub
 
     Sub AddNewAuto(ByVal Type As Integer)
@@ -380,27 +390,44 @@ Public Class Main
     Private Sub Timer2_Tick(sender As Object, e As EventArgs) Handles Timer2.Tick
         Timer2.Interval = 5000
         Doindex += 1
-        Dim AutoHwnd As Integer = CheckHwnd(MyAutoDataSet.Tables(0).Rows(Doindex).Item("Name"), MyAutoDataSet.Tables(0).Rows(Doindex).Item("Class"), -1, True, Doindex + 1)
-        If AutoHwnd <> -1 Then
-            Select Case MyAutoDataSet.Tables(0).Rows(Doindex).Item("Type")
-                Case -1
-                    PostMessage(AutoHwnd, &H112, &HF020, 0)
-                Case 0
-                    ShowWindow(AutoHwnd, SW_HIDE)
-                Case 1
-                    PostMessage(AutoHwnd, &H112, &HF060, 0)
-            End Select
-        End If
-        If Doindex >= MyAutoDataSet.Tables(0).Rows.Count - 1 Then
-            TimeRev = 60 '*10
+        If Doindex > MyAutoDataSet.Tables(0).Rows.Count - 1 Then
+            TimeRev = 60 * 10
             Timer2.Interval = 1000 * TimeRev
             Doindex = -1
+            LogText.Text = "完成全部值守操作."
+        Else
+            Dim AutoHwnd As Integer = CheckHwnd(MyAutoDataSet.Tables(0).Rows(Doindex).Item("Name"), MyAutoDataSet.Tables(0).Rows(Doindex).Item("Class"), -1, True, Doindex + 1)
+            If AutoHwnd <> -1 Then
+
+                Select Case MyAutoDataSet.Tables(0).Rows(Doindex).Item("Type")
+                    Case -1
+                        Try
+                            PostMessage(AutoHwnd, &H112, &HF020, 0)
+                        Catch ex As Exception
+                        End Try
+                    Case 0
+                        Try
+                            ShowWindow(AutoHwnd, SW_HIDE)
+                        Catch ex As Exception
+                        End Try
+                    Case 1
+                        Try
+                            PostMessage(AutoHwnd, &H112, &HF060, 0)
+                        Catch ex As Exception
+                        End Try
+                End Select
+
+            End If
         End If
     End Sub
 
     Private Sub Timer3_Tick(sender As Object, e As EventArgs) Handles Timer3.Tick
         TimeRev -= 1
-        GroupBox10.Text = "自动化值守操作          (倒计时:" & CulCulateLastTimeText(TimeRev, 0) & ")"
+        If Timer2.Enabled Then
+            GroupBox10.Text = "自动化值守操作          (倒计时:" & CulCulateLastTimeText(TimeRev, 0) & ")"
+        Else
+            GroupBox10.Text = "自动化值守操作          (已停止.)"
+        End If
     End Sub
     Public Function CulCulateLastTimeText(ByVal Time As Int64, ByVal IntevalType As Integer) As String
         Dim H, M, S As Int64
@@ -429,6 +456,19 @@ Public Class Main
                 Return HT
         End Select
     End Function '显示时间
+
+    Private Sub ToolStripLabel13_Click(sender As Object, e As EventArgs) Handles ToolStripLabel13.Click
+        Timer2.Enabled = Not Timer2.Enabled
+        If MyAutoDataSet.Tables(0).Rows.Count = 0 Then
+            Timer2.Enabled = False
+        End If
+        If Timer2.Enabled Then
+            ToolStripLabel13.Text = "停止值守"
+            TimeRev = 15
+        Else
+            ToolStripLabel13.Text = "恢复值守"
+        End If
+    End Sub
 #Region ""
 
 #End Region

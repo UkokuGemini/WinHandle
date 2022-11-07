@@ -87,11 +87,7 @@ Public Class Main
     Private Declare Function GetCursorPos Lib "user32" Alias "GetCursorPos" (ByVal lpPoint As PointApi) As Integer
     Private Declare Function WindowFromPoint Lib "user32" Alias "WindowFromPoint" (ByVal XPoint As Integer, ByVal YPoint As Integer) As Integer
     Private Sub Timer1_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Timer1.Tick
-        Try
-            'GetCursorPos(NowPoint)
-        Catch ex As Exception
-        End Try
-        LogText.Text = "坐标点(" & MousePosition.X & "," & MousePosition.Y & ")窗口信息."
+        ToolStripStatusLabel3.Text = "坐标点(" & MousePosition.X & "," & MousePosition.Y & ")窗口信息."
         Thwnd = WindowFromPoint(MousePosition.X, MousePosition.Y)
         If Thwnd > 0 Then
             HandleInfoText.Text = Thwnd
@@ -134,12 +130,16 @@ Public Class Main
         Else
             ToolStripLabel1_Click(Nothing, Nothing)
             获取鼠标窗口信息热键InsertToolStripMenuItem.Text = "获取鼠标窗口信息(热键Insert)"
+            ToolStripStatusLabel3.Text = ""
             LogText.Focus()
             LogText.Select(LogText.Text.Length, 0)
         End If
     End Sub
 
     Private Sub ToolStripLabel1_Click(sender As Object, e As EventArgs) Handles ToolStripLabel1.Click
+        ToolStripLabel13.Text = "恢复值守"
+        LogText.Text = "已停止值守！"
+        Timer2.Enabled = False
         If CheckHwnd(WinInfoText.Text, ClassInfoText.Text, HandleInfoText.Text) <> -1 Then
             SuccessFlag = True '这里需要一个专属Flag给手动查询专用
             HandleInfoText.Enabled = False
@@ -151,6 +151,7 @@ Public Class Main
         LogText.Focus()
         LogText.Select(LogText.Text.Length, 0)
     End Sub
+
     Function CheckHwnd(ByVal Name_T As String, ByVal Class_T As String, ByVal Hwnd_T As String, Optional AutoFlag As Boolean = False, Optional AutoIndex As Integer = 0) As Integer
         Dim CheckResult As Integer = -1
         If IsDBNull(Hwnd_T) OrElse Hwnd_T.ToString = "" Then
@@ -172,7 +173,11 @@ Public Class Main
                         End If
                         CheckResult = Hwnd
                     Else
-                        LogText.Text = "未捕捉到Name:(" & Name_T & ")窗口!"
+                        If AutoFlag Then
+                            LogText.Text &= vbCrLf & Now.ToShortTimeString & ">>未捕捉到Name:(" & Name_T & ")窗口!"
+                        Else
+                            LogText.Text = "未捕捉到Name:(" & Name_T & ")窗口!"
+                        End If
                     End If
                 End If
             Else
@@ -188,19 +193,23 @@ Public Class Main
                     End Try
                 End If
                 If Hwnd > 0 Then
-                        If AutoFlag = False Then
-                            HandleInfoText.Text = Hwnd
-                            TempStringW = Space(255)
-                            WindowLong = GetWindowText(Hwnd, TempStringW, 255)
-                            WinInfoText.Text = Trim(TempStringW)
-                            LogText.Text = "捕捉到Class:(" & Class_T & ")窗口!    ✔"
-                        End If
-                        CheckResult = Hwnd
+                    If AutoFlag = False Then
+                        HandleInfoText.Text = Hwnd
+                        TempStringW = Space(255)
+                        WindowLong = GetWindowText(Hwnd, TempStringW, 255)
+                        WinInfoText.Text = Trim(TempStringW)
+                        LogText.Text = "捕捉到Class:(" & Class_T & ")窗口!    ✔"
+                    End If
+                    CheckResult = Hwnd
+                Else
+                    If AutoFlag Then
+                        LogText.Text &= vbCrLf & Now.ToShortTimeString & ">>未捕捉到Class:(" & Class_T & ")窗口!"
                     Else
                         LogText.Text = "未捕捉到Class:(" & Class_T & ")窗口!"
                     End If
                 End If
-                ElseIf IsNumeric(Hwnd_T) Then
+            End If
+        ElseIf IsNumeric(Hwnd_T) Then
             Hwnd = Math.Abs(Convert.ToInt32(Hwnd_T))
             Dim ISWinBool As Boolean = False
             Try
@@ -219,13 +228,17 @@ Public Class Main
                 End If
                 CheckResult = Hwnd
             Else
-                LogText.Text = "未捕捉到Handle:(" & Hwnd_T & ")窗口!"
+                If AutoFlag Then
+                    LogText.Text &= vbCrLf & Now.ToShortTimeString & ">>未捕捉到Handle:(" & Hwnd_T & ")窗口!"
+                Else
+                    LogText.Text = "未捕捉到Handle:(" & Hwnd_T & ")窗口!"
+                End If
             End If
         Else
             LogText.Text = "句柄为数字!请更正填写."
         End If
         If AutoFlag Then
-            LogText.Text = "正在自动执行第" & AutoIndex & "项操作."
+            LogText.Text &= vbCrLf & Now.ToShortTimeString & ">>正在自动执行第" & AutoIndex & "项操作."
         End If
         Return CheckResult
     End Function
@@ -447,8 +460,11 @@ Public Class Main
             TimeRev = 60 * 10
             Timer2.Interval = 1000 * TimeRev
             Doindex = -1
-            LogText.Text = "完成全部值守操作."
+            LogText.Text &= vbCrLf & Now.ToShortTimeString & ">> 完成全部值守操作."
         Else
+            If Doindex = 0 Then
+                LogText.Text = Now.ToShortTimeString & ">> 开始值守工作:"
+            End If
             Try
                 DataGridView1.Rows(Doindex).Selected = True
                 DataGridView1.FirstDisplayedScrollingRowIndex = Doindex
@@ -456,24 +472,28 @@ Public Class Main
             End Try
             Dim AutoHwnd As Integer = CheckHwnd(MyAutoDataSet.Tables(0).Rows(Doindex).Item("Name"), MyAutoDataSet.Tables(0).Rows(Doindex).Item("Class"), "", True, Doindex + 1)
             If AutoHwnd <> -1 Then
+                LogText.Text &= vbCrLf & Now.ToShortTimeString & ">> "
                 Select Case MyAutoDataSet.Tables(0).Rows(Doindex).Item("Type")
                     Case -1
                         Try
                             PostMessage(AutoHwnd, &H112, &HF020, 0)
+                            LogText.Text &= "关闭"
                         Catch ex As Exception
                         End Try
                     Case 0
                         Try
                             ShowWindow(AutoHwnd, SW_HIDE)
+                            LogText.Text &= "隐藏"
                         Catch ex As Exception
                         End Try
                     Case 1
                         Try
                             PostMessage(AutoHwnd, &H112, &HF060, 0)
+                            LogText.Text &= "最小化"
                         Catch ex As Exception
                         End Try
                 End Select
-
+                LogText.Text &= MyAutoDataSet.Tables(0).Rows(Doindex).Item("Name") & "/" & MyAutoDataSet.Tables(0).Rows(Doindex).Item("Class")
             End If
         End If
     End Sub
@@ -525,7 +545,30 @@ Public Class Main
             Timer2.Interval = 1000 * TimeRev
         Else
             ToolStripLabel13.Text = "恢复值守"
+            LogText.Text = "已停止值守！"
         End If
+    End Sub
+
+    Private Sub DataGridView1_CellContentDoubleClick(sender As Object, e As DataGridViewCellEventArgs) Handles DataGridView1.CellContentDoubleClick
+        HandleInfoText.Enabled = True
+        ClassInfoText.Enabled = True
+        WinInfoText.Enabled = True
+        If DataGridView1.Columns(e.ColumnIndex).Name = "ColumnName" Then
+            WinInfoText.Text = DataGridView1.Rows(e.RowIndex).Cells("ColumnName").Value
+            ClassInfoText.Text = ""
+        ElseIf DataGridView1.Columns(e.ColumnIndex).Name = "ColumnClass" Then
+            ClassInfoText.Text = DataGridView1.Rows(e.RowIndex).Cells("ColumnClass").Value
+            WinInfoText.Text = ""
+        Else
+            ClassInfoText.Text = DataGridView1.Rows(e.RowIndex).Cells("ColumnClass").Value
+            WinInfoText.Text = DataGridView1.Rows(e.RowIndex).Cells("ColumnName").Value
+        End If
+        HandleInfoText.Text = ""
+    End Sub
+
+    Private Sub LogText_TextChanged(sender As Object, e As EventArgs) Handles LogText.TextChanged
+        LogText.SelectionStart = LogText.TextLength
+        LogText.ScrollToCaret()
     End Sub
 
     Private Sub 设置开机启动ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 设置开机启动ToolStripMenuItem.Click

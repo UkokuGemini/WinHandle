@@ -74,6 +74,8 @@ Partial Class Main
         Me.退出ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.Timer2 = New System.Windows.Forms.Timer(Me.components)
         Me.Timer3 = New System.Windows.Forms.Timer(Me.components)
+        Me.ToolStripStatusLabel2 = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.ToolStripStatusLabel3 = New System.Windows.Forms.ToolStripStatusLabel()
         Me.GroupBox5.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.ToolStrip2.SuspendLayout()
@@ -94,8 +96,8 @@ Partial Class Main
         '
         'GroupBox5
         '
-        Me.GroupBox5.Controls.Add(Me.GroupBox1)
         Me.GroupBox5.Controls.Add(Me.GroupBox9)
+        Me.GroupBox5.Controls.Add(Me.GroupBox1)
         Me.GroupBox5.Controls.Add(Me.ToolStrip1)
         Me.GroupBox5.Controls.Add(Me.GroupBox6)
         Me.GroupBox5.Controls.Add(Me.GroupBox7)
@@ -105,7 +107,7 @@ Partial Class Main
         Me.GroupBox5.Margin = New System.Windows.Forms.Padding(4)
         Me.GroupBox5.Name = "GroupBox5"
         Me.GroupBox5.Padding = New System.Windows.Forms.Padding(4)
-        Me.GroupBox5.Size = New System.Drawing.Size(459, 301)
+        Me.GroupBox5.Size = New System.Drawing.Size(459, 402)
         Me.GroupBox5.TabIndex = 8
         Me.GroupBox5.TabStop = False
         Me.GroupBox5.Text = "窗口信息"
@@ -113,8 +115,8 @@ Partial Class Main
         'GroupBox1
         '
         Me.GroupBox1.Controls.Add(Me.ToolStrip2)
-        Me.GroupBox1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.GroupBox1.Location = New System.Drawing.Point(4, 247)
+        Me.GroupBox1.Dock = System.Windows.Forms.DockStyle.Bottom
+        Me.GroupBox1.Location = New System.Drawing.Point(4, 348)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Size = New System.Drawing.Size(451, 50)
         Me.GroupBox1.TabIndex = 16
@@ -128,7 +130,7 @@ Partial Class Main
         Me.ToolStrip2.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripLabel7, Me.ToolStripLabel3, Me.ToolStripLabel5, Me.ToolStripLabel4, Me.ToolStripLabel6, Me.ToolStripLabel8})
         Me.ToolStrip2.Location = New System.Drawing.Point(3, 21)
         Me.ToolStrip2.Name = "ToolStrip2"
-        Me.ToolStrip2.Size = New System.Drawing.Size(445, 25)
+        Me.ToolStrip2.Size = New System.Drawing.Size(445, 31)
         Me.ToolStrip2.TabIndex = 16
         Me.ToolStrip2.Text = "ToolStrip2"
         '
@@ -177,12 +179,12 @@ Partial Class Main
         'GroupBox9
         '
         Me.GroupBox9.Controls.Add(Me.LogText)
-        Me.GroupBox9.Dock = System.Windows.Forms.DockStyle.Top
+        Me.GroupBox9.Dock = System.Windows.Forms.DockStyle.Fill
         Me.GroupBox9.Location = New System.Drawing.Point(4, 197)
         Me.GroupBox9.Margin = New System.Windows.Forms.Padding(4)
         Me.GroupBox9.Name = "GroupBox9"
         Me.GroupBox9.Padding = New System.Windows.Forms.Padding(4)
-        Me.GroupBox9.Size = New System.Drawing.Size(451, 50)
+        Me.GroupBox9.Size = New System.Drawing.Size(451, 151)
         Me.GroupBox9.TabIndex = 13
         Me.GroupBox9.TabStop = False
         Me.GroupBox9.Text = "LogInfo"
@@ -192,9 +194,11 @@ Partial Class Main
         Me.LogText.Dock = System.Windows.Forms.DockStyle.Fill
         Me.LogText.Location = New System.Drawing.Point(4, 22)
         Me.LogText.Margin = New System.Windows.Forms.Padding(4)
+        Me.LogText.Multiline = True
         Me.LogText.Name = "LogText"
         Me.LogText.ReadOnly = True
-        Me.LogText.Size = New System.Drawing.Size(443, 25)
+        Me.LogText.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
+        Me.LogText.Size = New System.Drawing.Size(443, 125)
         Me.LogText.TabIndex = 0
         '
         'ToolStrip1
@@ -299,8 +303,8 @@ Partial Class Main
         'StatusStrip1
         '
         Me.StatusStrip1.ImageScalingSize = New System.Drawing.Size(20, 20)
-        Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripStatusLabel1})
-        Me.StatusStrip1.Location = New System.Drawing.Point(0, 328)
+        Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripStatusLabel1, Me.ToolStripStatusLabel2, Me.ToolStripStatusLabel3})
+        Me.StatusStrip1.Location = New System.Drawing.Point(0, 429)
         Me.StatusStrip1.Name = "StatusStrip1"
         Me.StatusStrip1.Padding = New System.Windows.Forms.Padding(19, 0, 1, 0)
         Me.StatusStrip1.RightToLeft = System.Windows.Forms.RightToLeft.Yes
@@ -328,7 +332,7 @@ Partial Class Main
         Me.DataGridView1.RowHeadersWidth = 25
         Me.DataGridView1.RowTemplate.Height = 27
         Me.DataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.DataGridView1.Size = New System.Drawing.Size(541, 202)
+        Me.DataGridView1.Size = New System.Drawing.Size(541, 303)
         Me.DataGridView1.TabIndex = 10
         '
         'ColumnNum
@@ -389,7 +393,7 @@ Partial Class Main
         Me.GroupBox10.Dock = System.Windows.Forms.DockStyle.Fill
         Me.GroupBox10.Location = New System.Drawing.Point(459, 27)
         Me.GroupBox10.Name = "GroupBox10"
-        Me.GroupBox10.Size = New System.Drawing.Size(547, 301)
+        Me.GroupBox10.Size = New System.Drawing.Size(547, 402)
         Me.GroupBox10.TabIndex = 11
         Me.GroupBox10.TabStop = False
         Me.GroupBox10.Text = "自动化值守操作"
@@ -417,7 +421,7 @@ Partial Class Main
         '
         Me.GroupBox2.Controls.Add(Me.ToolStrip3)
         Me.GroupBox2.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.GroupBox2.Location = New System.Drawing.Point(3, 248)
+        Me.GroupBox2.Location = New System.Drawing.Point(3, 349)
         Me.GroupBox2.Name = "GroupBox2"
         Me.GroupBox2.Size = New System.Drawing.Size(541, 50)
         Me.GroupBox2.TabIndex = 17
@@ -535,11 +539,23 @@ Partial Class Main
         'Timer3
         '
         '
+        'ToolStripStatusLabel2
+        '
+        Me.ToolStripStatusLabel2.Name = "ToolStripStatusLabel2"
+        Me.ToolStripStatusLabel2.Size = New System.Drawing.Size(720, 19)
+        Me.ToolStripStatusLabel2.Spring = True
+        Me.ToolStripStatusLabel2.Text = "."
+        '
+        'ToolStripStatusLabel3
+        '
+        Me.ToolStripStatusLabel3.Name = "ToolStripStatusLabel3"
+        Me.ToolStripStatusLabel3.Size = New System.Drawing.Size(0, 19)
+        '
         'Main
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 15.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1006, 353)
+        Me.ClientSize = New System.Drawing.Size(1006, 454)
         Me.Controls.Add(Me.GroupBox10)
         Me.Controls.Add(Me.GroupBox5)
         Me.Controls.Add(Me.StatusStrip1)
@@ -547,8 +563,6 @@ Partial Class Main
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MainMenuStrip = Me.MenuStrip1
         Me.Margin = New System.Windows.Forms.Padding(4)
-        Me.MaximizeBox = False
-        Me.MaximumSize = New System.Drawing.Size(1024, 400)
         Me.MinimumSize = New System.Drawing.Size(1024, 400)
         Me.Name = "Main"
         Me.Text = "WinHandle窗口信息获取"
@@ -636,4 +650,6 @@ Partial Class Main
     Friend WithEvents ToolStrip4 As ToolStrip
     Friend WithEvents ToolStripLabel13 As ToolStripLabel
     Friend WithEvents 设置开机启动ToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents ToolStripStatusLabel2 As ToolStripStatusLabel
+    Friend WithEvents ToolStripStatusLabel3 As ToolStripStatusLabel
 End Class

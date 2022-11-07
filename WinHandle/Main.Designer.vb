@@ -426,7 +426,7 @@ Partial Class Main
         Me.GroupBox2.Size = New System.Drawing.Size(541, 50)
         Me.GroupBox2.TabIndex = 17
         Me.GroupBox2.TabStop = False
-        Me.GroupBox2.Text = "窗口操作"
+        Me.GroupBox2.Text = "值守操作"
         '
         'ToolStrip3
         '
